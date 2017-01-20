@@ -35,7 +35,7 @@ cd /build
 fpm \
   --verbose \
   -v "${VERSION}" \
-  -n ts-lynis \
+  -n heimdall-lynis \
   -t deb \
   -s dir \
   -m "Tradeshift Operations <operations@tradeshift.com>" \
