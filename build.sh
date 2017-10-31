@@ -1,6 +1,6 @@
 #!/bin/bash
 
-UPSTREAM_VERSION=2.4.1
+UPSTREAM_VERSION=2.5.8
 TS_VERSION=1
 
 VERSION="${UPSTREAM_VERSION}-ts${TS_VERSION}"
@@ -28,12 +28,7 @@ cp -r plugins tmp/buildroot/usr/share/lynis
 gzip lynis.8 -c > lynis.8.gz && cp lynis.8.gz tmp/buildroot/usr/share/man/man8
 cp extras/bash_completion.d/lynis tmp/buildroot/etc/bash_completion.d
 
-cat << EOH > tmp/build-lynis.sh
-#!/bin/bash
-
-cd /build
-fpm \
-  --verbose \
+docker run --rm -i --workdir /build -v ${PWD}/tmp:/build tenzer/fpm  --verbose \
   -v "${VERSION}" \
   -n ts-lynis \
   -t deb \
@@ -63,10 +58,5 @@ fpm \
   -C /build/buildroot \
   .
 
-exit 0
-EOH
-
-chmod +x tmp/build-lynis.sh
-docker run --rm -i -v ${PWD}/tmp:/build tenzer/fpm /build/build-lynis.sh
 mv ${PWD}/tmp/*deb ${PWD}/
 rm -r tmp lynis.8.gz
